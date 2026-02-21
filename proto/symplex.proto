@@ -1,0 +1,71 @@
+// Symplex Protocol v1 — Semantic Interoperability for AI Agents
+// Compatible with MCP (Model Context Protocol) as a semantic extension layer.
+//
+// Wire format: Protobuf 3
+// Use `make proto` to regenerate Go bindings.
+
+syntax = "proto3";
+
+package symplex.v1;
+
+option go_package = "github.com/symplex-protocol/symplex/proto/gen;symplex_proto";
+
+// IntentMessage carries a semantic intent from one agent to another.
+// The intent_vector encodes meaning in a shared embedding space (e.g., sentence-transformers).
+message IntentMessage {
+  string id = 1;                         // Unique message ID (UUID or hash)
+  repeated float intent_vector = 2 [packed = true]; // Semantic embedding vector
+  repeated string capabilities = 3;      // Required capabilities to fulfill this intent
+  string did = 4;                        // Sender's Decentralized Identifier
+  string payload = 5;                    // Optional structured payload (plain text or JSON)
+  int64 timestamp = 6;                   // Unix nanosecond timestamp
+  float trust_score = 7;                 // Sender's current trust score [0.0, 1.0]
+  map<string, string> metadata = 8;      // Extensible key-value metadata
+}
+
+// HandshakeMessage establishes a connection and exchanges capabilities.
+message HandshakeMessage {
+  string agent_id = 1;                   // Announcing agent's unique identifier
+  string did = 2;                        // Agent's Decentralized Identifier
+  repeated string capabilities = 3;      // Declared capabilities
+  string version = 4;                    // Symplex protocol version (semver, e.g. "1.0.0")
+  int64 timestamp = 5;                   // Unix nanosecond timestamp
+  bytes public_key = 6;                  // Ed25519 public key (32 bytes)
+  bytes challenge = 7;                   // Random nonce for mutual authentication
+  bytes challenge_response = 8;          // Signature of peer's challenge with own private key
+}
+
+// NegotiationResponse answers an IntentMessage, optionally defining a distributed workflow.
+message NegotiationResponse {
+  string request_id = 1;                 // ID of the IntentMessage being answered
+  string agent_id = 2;                   // Responding agent's ID
+  bool accepted = 3;                     // Whether the intent is accepted
+  repeated string workflow_steps = 4;    // Ordered steps of the distributed workflow
+  string did = 5;                        // Responding agent's DID
+  repeated float response_vector = 6 [packed = true]; // Semantic response vector
+  int64 timestamp = 7;                   // Unix nanosecond timestamp
+  string reason = 8;                     // Human-readable reason for the decision
+  float trust_delta = 9;                 // Suggested change to requester's trust score
+}
+
+// WorkflowMessage carries a single step of a distributed workflow.
+message WorkflowMessage {
+  string workflow_id = 1;                // Global workflow identifier
+  string step_id = 2;                    // Current step identifier
+  string next_step_id = 3;              // Next step ID (empty if final step)
+  string agent_id = 4;                   // Agent responsible for this step
+  string did = 5;                        // Agent's DID
+  string action = 6;                     // Action verb (e.g. "summarise", "validate", "store")
+  map<string, string> params = 7;        // Action parameters
+  string result_chan = 8;                // Address/topic to deliver step result
+  int64 timestamp = 9;
+}
+
+// CapabilityAnnouncement broadcasts an agent's capabilities to nearby peers.
+message CapabilityAnnouncement {
+  string agent_id = 1;
+  string did = 2;
+  repeated string capabilities = 3;
+  int64 timestamp = 4;
+  int64 ttl = 5;                         // Time-to-live in seconds (0 = indefinite)
+}
