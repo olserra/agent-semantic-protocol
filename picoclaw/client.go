@@ -1,11 +1,11 @@
-// Package picoclaw provides an adapter that bridges Symplex agents with
+// Package picoclaw provides an adapter that bridges Agent Semantic Protocol agents with
 // Picoclaw-compatible AI assistant services.
 //
 // Picoclaw is assumed to expose a simple HTTP/JSON API for receiving intents
-// and returning structured responses.  This adapter translates Symplex
+// and returning structured responses.  This adapter translates Agent Semantic Protocol
 // IntentMessages into Picoclaw requests and maps responses back to
 // NegotiationResponses, allowing any Picoclaw-powered AI assistant to
-// participate in a Symplex mesh.
+// participate in a Agent Semantic Protocol mesh.
 //
 // Interface contract (replace base URL with your Picoclaw deployment):
 //
@@ -26,10 +26,10 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/olserra/symplex/core"
+	"github.com/olserra/agent-semantic-protocol/core"
 )
 
-// Client is a Symplex-to-Picoclaw bridge.
+// Client is a Agent Semantic Protocol-to-Picoclaw bridge.
 type Client struct {
 	baseURL    string
 	apiKey     string
@@ -100,7 +100,7 @@ type CapabilitiesResponse struct {
 
 // ------------------------------------------------------------------ public API
 
-// SendIntent forwards a Symplex IntentMessage to the Picoclaw API and maps
+// SendIntent forwards a Agent Semantic Protocol IntentMessage to the Picoclaw API and maps
 // the response to a NegotiationResponse.
 func (c *Client) SendIntent(ctx context.Context, intent *core.IntentMessage) (*core.NegotiationResponse, error) {
 	req := IntentRequest{

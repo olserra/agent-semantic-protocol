@@ -1,6 +1,6 @@
 package core
 
-// negotiation.go — Symplex spontaneous intent negotiation.
+// negotiation.go — Agent Semantic Protocol spontaneous intent negotiation.
 //
 // Intent negotiation allows Agent A to express a semantic goal (as a float32
 // vector) and request that Agent B fulfil it, optionally generating a

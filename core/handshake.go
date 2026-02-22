@@ -1,6 +1,6 @@
 package core
 
-// handshake.go — Symplex connection-establishment protocol.
+// handshake.go — Agent Semantic Protocol connection-establishment protocol.
 //
 // Flow:
 //   Initiator                        Responder

@@ -1,4 +1,4 @@
-// simple-handshake — Two local Symplex agents exchange a cryptographic handshake
+// simple-handshake — Two local Agent Semantic Protocol agents exchange a cryptographic handshake
 // and discover each other's capabilities over a real libp2p TCP connection.
 //
 // Run:
@@ -13,8 +13,8 @@ import (
 	"time"
 
 	"github.com/libp2p/go-libp2p/core/peer"
-	"github.com/olserra/symplex/core"
-	"github.com/olserra/symplex/p2p"
+	"github.com/olserra/agent-semantic-protocol/core"
+	"github.com/olserra/agent-semantic-protocol/p2p"
 )
 
 func main() {
@@ -22,7 +22,7 @@ func main() {
 	defer cancel()
 
 	fmt.Println("╔══════════════════════════════════════════════╗")
-	fmt.Println("║     Symplex v0.1 — Simple Handshake Demo     ║")
+	fmt.Println("║     Agent Semantic Protocol v0.1 — Simple Handshake Demo     ║")
 	fmt.Println("╚══════════════════════════════════════════════╝")
 	fmt.Println()
 
@@ -75,7 +75,7 @@ func main() {
 	fmt.Println("✓ TCP connection established (alpha→beta)")
 
 	// ── Handshake ─────────────────────────────────────────────────────────────
-	fmt.Println("\n── Performing Symplex Handshake ─────────────────────────────────────")
+	fmt.Println("\n── Performing Agent Semantic Protocol Handshake ─────────────────────────────────────")
 	resp, err := hostA.Handshake(ctx, hostB.PeerID())
 	if err != nil {
 		log.Fatalf("handshake failed: %v", err)

@@ -1,4 +1,4 @@
-// Symplex Protocol v1 — Semantic Interoperability for AI Agents
+// Agent Semantic Protocol Protocol v1 — Semantic Interoperability for AI Agents
 // Compatible with MCP (Model Context Protocol) as a semantic extension layer.
 //
 // Wire format: Protobuf 3
@@ -6,9 +6,9 @@
 
 syntax = "proto3";
 
-package symplex.v1;
+package agent-semantic-protocol.v1;
 
-option go_package = "github.com/symplex-protocol/symplex/proto/gen;symplex_proto";
+option go_package = "github.com/agent-semantic-protocol-protocol/agent-semantic-protocol/proto/gen;agent-semantic-protocol_proto";
 
 // IntentMessage carries a semantic intent from one agent to another.
 // The intent_vector encodes meaning in a shared embedding space (e.g., sentence-transformers).
@@ -28,7 +28,7 @@ message HandshakeMessage {
   string agent_id = 1;                   // Announcing agent's unique identifier
   string did = 2;                        // Agent's Decentralized Identifier
   repeated string capabilities = 3;      // Declared capabilities
-  string version = 4;                    // Symplex protocol version (semver, e.g. "1.0.0")
+  string version = 4;                    // Agent Semantic Protocol protocol version (semver, e.g. "1.0.0")
   int64 timestamp = 5;                   // Unix nanosecond timestamp
   bytes public_key = 6;                  // Ed25519 public key (32 bytes)
   bytes challenge = 7;                   // Random nonce for mutual authentication

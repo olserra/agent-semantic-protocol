@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/libp2p/go-libp2p/core/peer"
-	"github.com/olserra/symplex/core"
-	"github.com/olserra/symplex/p2p"
+	"github.com/olserra/agent-semantic-protocol/core"
+	"github.com/olserra/agent-semantic-protocol/p2p"
 )
 
 func makeAgent(t *testing.T, id string, caps []string) *core.Agent {
@@ -29,7 +29,7 @@ func makeHost(t *testing.T, agent *core.Agent) *p2p.AgentHost {
 	return h
 }
 
-// TestHandshake verifies that two agents complete the Symplex handshake and
+// TestHandshake verifies that two agents complete the Agent Semantic Protocol handshake and
 // exchange capability information.
 func TestHandshake(t *testing.T) {
 	alpha := makeAgent(t, "alpha", []string{"nlp"})

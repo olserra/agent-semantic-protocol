@@ -1,10 +1,10 @@
 package core
 
-// encoding.go — Symplex binary encoding using the Protobuf wire format.
+// encoding.go — Agent Semantic Protocol binary encoding using the Protobuf wire format.
 //
 // Message bytes are produced/consumed with google.golang.org/protobuf/encoding/protowire,
 // which gives us the efficient Protobuf binary layout without requiring protoc code generation.
-// Field numbers match proto/symplex.proto exactly so generated bindings are compatible.
+// Field numbers match proto/agent-semantic-protocol.proto exactly so generated bindings are compatible.
 
 import (
 	"encoding/binary"

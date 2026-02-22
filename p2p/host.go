@@ -1,7 +1,7 @@
-// Package p2p provides a libp2p-backed transport layer for the Symplex protocol.
+// Package p2p provides a libp2p-backed transport layer for the Agent Semantic Protocol protocol.
 //
-// Each Symplex node wraps a libp2p host and registers stream handlers for the
-// "/symplex/1.0.0" protocol ID.  Messages are framed using core.Frame/Unframe:
+// Each Agent Semantic Protocol node wraps a libp2p host and registers stream handlers for the
+// "/agent-semantic-protocol/1.0.0" protocol ID.  Messages are framed using core.Frame/Unframe:
 //
 //	[4-byte big-endian length] [1-byte MessageType] [N-byte protobuf payload]
 package p2p
@@ -19,11 +19,11 @@ import (
 	"github.com/libp2p/go-libp2p/core/network"
 	"github.com/libp2p/go-libp2p/core/peer"
 	"github.com/libp2p/go-libp2p/core/protocol"
-	"github.com/olserra/symplex/core"
+	"github.com/olserra/agent-semantic-protocol/core"
 )
 
-// SymplexProtocol is the libp2p protocol identifier for Symplex v1.
-const SymplexProtocol protocol.ID = "/symplex/1.0.0"
+// AgentSemanticProtocol is the libp2p protocol identifier for Agent Semantic Protocol v1.
+const AgentSemanticProtocol protocol.ID = "/agent-semantic-protocol/1.0.0"
 
 // HandshakeCallback is invoked when a peer initiates a handshake.
 // Return a HandshakeMessage to respond, or nil to reject.
@@ -33,7 +33,7 @@ type HandshakeCallback func(peerID peer.ID, msg *core.HandshakeMessage) *core.Ha
 // Return a NegotiationResponse to reply.
 type IntentCallback func(peerID peer.ID, msg *core.IntentMessage) *core.NegotiationResponse
 
-// AgentHost wraps a libp2p host with Symplex protocol logic.
+// AgentHost wraps a libp2p host with Agent Semantic Protocol protocol logic.
 type AgentHost struct {
 	h         host.Host
 	agent     *core.Agent
@@ -48,7 +48,7 @@ type AgentHost struct {
 	known map[string]core.AgentProfile
 }
 
-// NewHost creates a new Symplex P2P host listening on an available TCP port.
+// NewHost creates a new Agent Semantic Protocol P2P host listening on an available TCP port.
 // The host's identity is derived from the agent's Ed25519 key.
 func NewHost(ctx context.Context, agent *core.Agent) (*AgentHost, error) {
 	h, err := libp2p.New(
@@ -65,7 +65,7 @@ func NewHost(ctx context.Context, agent *core.Agent) (*AgentHost, error) {
 		trust:     core.NewTrustGraph(),
 		known:     make(map[string]core.AgentProfile),
 	}
-	h.SetStreamHandler(SymplexProtocol, ah.handleStream)
+	h.SetStreamHandler(AgentSemanticProtocol, ah.handleStream)
 	return ah, nil
 }
 
@@ -107,10 +107,10 @@ func (ah *AgentHost) OnIntent(fn IntentCallback) {
 
 // ------------------------------------------------------------------ outgoing messages
 
-// Handshake initiates a Symplex handshake with peerID.
+// Handshake initiates a Agent Semantic Protocol handshake with peerID.
 // Returns the peer's HandshakeMessage on success.
 func (ah *AgentHost) Handshake(ctx context.Context, peerID peer.ID) (*core.HandshakeMessage, error) {
-	stream, err := ah.h.NewStream(ctx, peerID, SymplexProtocol)
+	stream, err := ah.h.NewStream(ctx, peerID, AgentSemanticProtocol)
 	if err != nil {
 		return nil, fmt.Errorf("p2p handshake: open stream: %w", err)
 	}
@@ -165,7 +165,7 @@ func (ah *AgentHost) SendIntent(
 	peerID peer.ID,
 	intent *core.IntentMessage,
 ) (*core.NegotiationResponse, error) {
-	stream, err := ah.h.NewStream(ctx, peerID, SymplexProtocol)
+	stream, err := ah.h.NewStream(ctx, peerID, AgentSemanticProtocol)
 	if err != nil {
 		return nil, fmt.Errorf("p2p intent: open stream: %w", err)
 	}
@@ -205,7 +205,7 @@ func (ah *AgentHost) AnnounceCapabilities(ctx context.Context) {
 	ann := core.BuildAnnouncement(ah.agent, 300) // 5-minute TTL
 	for _, p := range ah.h.Network().Peers() {
 		go func(pid peer.ID) {
-			stream, err := ah.h.NewStream(ctx, pid, SymplexProtocol)
+			   stream, err := ah.h.NewStream(ctx, pid, AgentSemanticProtocol)
 			if err != nil {
 				return
 			}
@@ -328,7 +328,7 @@ func writeMsg(w io.Writer, msg core.Encoder) error {
 	return err
 }
 
-// readMsg reads one framed Symplex message from r.
+// readMsg reads one framed Agent Semantic Protocol message from r.
 func readMsg(r io.Reader) (core.MessageType, []byte, error) {
 	var hdr [4]byte
 	if _, err := io.ReadFull(r, hdr[:]); err != nil {

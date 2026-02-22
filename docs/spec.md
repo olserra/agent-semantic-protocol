@@ -1,7 +1,7 @@
-# Symplex Protocol Specification — v0.1
+# Agent Semantic Protocol Protocol Specification — v0.1
 
 **Status:** Draft
-**Authors:** Symplex Protocol Contributors
+**Authors:** Agent Semantic Protocol Protocol Contributors
 **Date:** 2025
 
 ---
@@ -26,14 +26,14 @@
 
 ## 1. Overview
 
-Symplex is a **semantic communication protocol** for AI agent meshes.  It extends the Model Context Protocol (MCP) with:
+Agent Semantic Protocol is a **semantic communication protocol** for AI agent meshes.  It extends the Model Context Protocol (MCP) with:
 
 - **Vector-encoded intents** instead of rigid tool schemas
 - **Spontaneous peer negotiation** without a central registry
-- **Federated identity** via lightweight DID:symplex identifiers
+- **Federated identity** via lightweight DID:agent-semantic-protocol identifiers
 - **Distributed workflow orchestration** across capable peers
 
-Symplex does not replace MCP — it composes with it.  A Symplex node can expose an MCP tool interface externally while using Symplex internally for cross-agent coordination.
+Agent Semantic Protocol does not replace MCP — it composes with it.  A Agent Semantic Protocol node can expose an MCP tool interface externally while using Agent Semantic Protocol internally for cross-agent coordination.
 
 ---
 
@@ -59,7 +59,7 @@ Symplex does not replace MCP — it composes with it.  A Symplex node can expose
 
 ```
   ┌───────────────────────────────────────────────────────┐
-  │                   Symplex Mesh                        │
+  │                   Agent Semantic Protocol Mesh                        │
   │                                                       │
   │   ┌──────────┐    intent    ┌──────────┐              │
   │   │ Agent A  │ ──────────► │ Agent B  │              │
@@ -84,7 +84,7 @@ Symplex does not replace MCP — it composes with it.  A Symplex node can expose
 
 ## 4. Message Format
 
-All Symplex messages are encoded in **Protobuf 3 binary format** (wire format compatible with `proto/symplex.proto`).
+All Agent Semantic Protocol messages are encoded in **Protobuf 3 binary format** (wire format compatible with `proto/agent-semantic-protocol.proto`).
 
 Each message is **framed** before transmission:
 
@@ -225,10 +225,10 @@ Orchestrator                  Worker_1          Worker_2
 ### 6.1 DID Format
 
 ```
-did:symplex:<hex(sha256(ed25519_public_key))>
+did:agent-semantic-protocol:<hex(sha256(ed25519_public_key))>
 ```
 
-Example: `did:symplex:3a7fc29e8f1b4d5a9e0c3b6d7f2a4e8c1d5b9f3a7e2c0d4b6a8f1e3d5c7b9f0`
+Example: `did:agent-semantic-protocol:3a7fc29e8f1b4d5a9e0c3b6d7f2a4e8c1d5b9f3a7e2c0d4b6a8f1e3d5c7b9f0`
 
 ### 6.2 Key Generation
 
@@ -236,7 +236,7 @@ Each agent generates a fresh Ed25519 key-pair on first start.  The DID is derive
 
 ```
 privKey, pubKey  = ed25519.GenerateKey(rand.Reader)
-did              = "did:symplex:" + hex(sha256(pubKey))
+did              = "did:agent-semantic-protocol:" + hex(sha256(pubKey))
 ```
 
 ### 6.3 DID Binding Verification
@@ -279,7 +279,7 @@ Capability exchange is **embedded in the handshake** — no separate announcemen
 
 ## 8. Semantic Routing
 
-When multiple peers satisfy the required capabilities, Symplex ranks them by **cosine similarity** between the intent vector and each peer's registered embedding vector:
+When multiple peers satisfy the required capabilities, Agent Semantic Protocol ranks them by **cosine similarity** between the intent vector and each peer's registered embedding vector:
 
 ```
 similarity(a, b) = (a · b) / (‖a‖ · ‖b‖)
@@ -323,7 +323,7 @@ Steps within a workflow are executed **concurrently by default**.  Sequential de
 
 ## 10. Transport Layer
 
-Symplex uses **libp2p** (`/symplex/1.0.0`) as the transport protocol.
+Agent Semantic Protocol uses **libp2p** (`/agent-semantic-protocol/1.0.0`) as the transport protocol.
 
 - **Default**: TCP (`/ip4/x.x.x.x/tcp/N`)
 - **Planned**: QUIC, WebRTC for browser agents
@@ -336,10 +336,10 @@ For testing and in-process simulation, `core.NegotiationBus` provides a zero-net
 
 ## 11. Picoclaw Integration
 
-The `picoclaw` package provides an HTTP/JSON adapter that bridges Symplex with Picoclaw-compatible AI assistant services.
+The `picoclaw` package provides an HTTP/JSON adapter that bridges Agent Semantic Protocol with Picoclaw-compatible AI assistant services.
 
 ```
-Symplex IntentMessage
+Agent Semantic Protocol IntentMessage
         │
         ▼
 picoclaw.Client.SendIntent()

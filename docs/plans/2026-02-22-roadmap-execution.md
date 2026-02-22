@@ -1,8 +1,8 @@
-# Symplex Roadmap Execution Plan
+# Agent Semantic Protocol Roadmap Execution Plan
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Close the most impactful gaps in Symplex v0.1: fix the capability announcement TODO, add p2p integration tests, enable per-message Ed25519 signing, and update documentation.
+**Goal:** Close the most impactful gaps in Agent Semantic Protocol v0.1: fix the capability announcement TODO, add p2p integration tests, enable per-message Ed25519 signing, and update documentation.
 
 **Architecture:** Changes are additive and backward-compatible. Tasks 1–3 are low-risk correctness fixes; Task 4 (signing) touches the wire format but only for new messages. No API breakage.
 
@@ -33,7 +33,7 @@
 
 **Step 1: Verify the decoder exists**
 
-Run: `grep -n "DecodeCapabilityAnnouncement\|AnnounceFromMessage" /Users/olserra-duvenbeck/Developer/symplex/core/*.go`
+Run: `grep -n "DecodeCapabilityAnnouncement\|AnnounceFromMessage" /Users/olserra-duvenbeck/Developer/agent-semantic-protocol/core/*.go`
 Expected: both symbols are defined.
 
 **Step 2: Replace the TODO body**
@@ -81,8 +81,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/olserra/symplex/core"
-	"github.com/olserra/symplex/p2p"
+	"github.com/olserra/agent-semantic-protocol/core"
+	"github.com/olserra/agent-semantic-protocol/p2p"
 )
 
 func makeAgent(t *testing.T, id string, caps []string) *core.Agent {
@@ -105,7 +105,7 @@ func makeHost(t *testing.T, agent *core.Agent) *p2p.AgentHost {
 	return h
 }
 
-// TestHandshake verifies that two agents can complete the Symplex handshake.
+// TestHandshake verifies that two agents can complete the Agent Semantic Protocol handshake.
 func TestHandshake(t *testing.T) {
 	alpha := makeAgent(t, "alpha", []string{"nlp"})
 	beta  := makeAgent(t, "beta",  []string{"code-gen"})
@@ -263,7 +263,7 @@ package core_test
 
 import (
 	"testing"
-	"github.com/olserra/symplex/core"
+	"github.com/olserra/agent-semantic-protocol/core"
 )
 
 func TestIntentMessageSigning(t *testing.T) {
@@ -432,12 +432,12 @@ Run with: `go test -bench=. -benchmem ./...`
 
 ## Task 7: Python SDK (future)
 
-**Files:** New repo `symplex-python/` or `sdk/python/`
+**Files:** New repo `agent-semantic-protocol-python/` or `sdk/python/`
 
 **Minimum viable SDK:**
-- `symplex.Agent` — wraps DID generation (use `cryptography` lib for Ed25519)
-- `symplex.IntentMessage` — manual protobuf encoding matching Go wire format
-- `symplex.connect(addr)` — TCP socket, framing protocol
-- `symplex.negotiate(intent)` — send + receive
+- `agent-semantic-protocol.Agent` — wraps DID generation (use `cryptography` lib for Ed25519)
+- `agent-semantic-protocol.IntentMessage` — manual protobuf encoding matching Go wire format
+- `agent-semantic-protocol.connect(addr)` — TCP socket, framing protocol
+- `agent-semantic-protocol.negotiate(intent)` — send + receive
 
 **Reference implementation:** `core/encoding.go` (protobuf field numbers are the source of truth).

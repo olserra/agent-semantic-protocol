@@ -3,7 +3,7 @@ package core_test
 import (
 	"testing"
 
-	"github.com/olserra/symplex/core"
+	"github.com/olserra/agent-semantic-protocol/core"
 )
 
 // ------------------------------------------------------------------ VerifyIntentSignature

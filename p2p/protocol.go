@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"github.com/libp2p/go-libp2p/core/peer"
-	"github.com/olserra/symplex/core"
+	"github.com/olserra/agent-semantic-protocol/core"
 )
 
 // WorkflowOrchestrator dispatches workflow steps to the best-matching peers.

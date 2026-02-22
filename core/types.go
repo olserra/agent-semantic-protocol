@@ -1,10 +1,10 @@
 // Package core provides the fundamental types, encoding, and protocol logic
-// for the Symplex semantic agent communication protocol.
+// for the Agent Semantic Protocol semantic agent communication protocol.
 package core
 
 import "time"
 
-// MessageType identifies the kind of a framed Symplex message.
+// MessageType identifies the kind of a framed Agent Semantic Protocol message.
 type MessageType byte
 
 const (
@@ -15,10 +15,10 @@ const (
 	MsgCapability  MessageType = 0x05
 )
 
-// ProtocolVersion is the current Symplex wire-protocol version.
+// ProtocolVersion is the current Agent Semantic Protocol wire-protocol version.
 const ProtocolVersion = "1.0.0"
 
-// Encoder is implemented by every Symplex message type.
+// Encoder is implemented by every Agent Semantic Protocol message type.
 type Encoder interface {
 	Encode() ([]byte, error)
 	MsgType() MessageType
@@ -68,7 +68,7 @@ type IntentMessage struct {
 	ID           string
 	IntentVector []float32         // Semantic embedding (e.g. 384-dim sentence-transformer)
 	Capabilities []string          // Capabilities required to fulfil this intent
-	DID          string            // Sender DID string ("did:symplex:<id>")
+	DID          string            // Sender DID string ("did:agent-semantic-protocol:<id>")
 	Payload      string            // Optional payload (plain text or JSON)
 	Timestamp    int64             // Unix nanoseconds
 	TrustScore   float32           // Sender trust score [0.0, 1.0]

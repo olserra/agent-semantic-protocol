@@ -1,4 +1,4 @@
-module github.com/olserra/symplex
+module github.com/olserra/agent-semantic-protocol
 
 go 1.22
 

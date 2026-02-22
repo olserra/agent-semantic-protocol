@@ -1,8 +1,8 @@
 package core
 
-// did.go — Lightweight Decentralized Identifiers for Symplex agents.
+// did.go — Lightweight Decentralized Identifiers for Agent Semantic Protocol agents.
 //
-// Format:  did:symplex:<hex(sha256(ed25519-pubkey))>
+// Format:  did:agent-semantic-protocol:<hex(sha256(ed25519-pubkey))>
 //
 // The DID is derived deterministically from an Ed25519 public key.
 // In v0.1, trust is established by verifying the public key in the
@@ -17,9 +17,9 @@ import (
 	"fmt"
 )
 
-// DID represents a Symplex Decentralized Identifier.
+// DID represents a Agent Semantic Protocol Decentralized Identifier.
 type DID struct {
-	Method string // always "symplex" for Symplex DIDs
+	Method string // always "agent-semantic-protocol" for Agent Semantic Protocol DIDs
 	ID     string // hex(sha256(pubkey))
 
 	pubKey  []byte
@@ -45,7 +45,7 @@ func DIDFromPublicKey(pubKey []byte) (*DID, error) {
 	return didFromKey(ed25519.PublicKey(pubKey), nil), nil
 }
 
-// ParseDID parses a "did:symplex:<id>" string.
+// ParseDID parses a "did:agent-semantic-protocol:<id>" string.
 func ParseDID(s string) (*DID, error) {
 	var method, id string
 	if _, err := fmt.Sscanf(s, "did:%s", &method); err != nil {
@@ -73,14 +73,14 @@ func ParseDID(s string) (*DID, error) {
 func didFromKey(pub ed25519.PublicKey, priv ed25519.PrivateKey) *DID {
 	h := sha256.Sum256(pub)
 	return &DID{
-		Method:  "symplex",
+		Method:  "agent-semantic-protocol",
 		ID:      hex.EncodeToString(h[:]),
 		pubKey:  []byte(pub),
 		privKey: []byte(priv),
 	}
 }
 
-// String returns the canonical DID string ("did:symplex:<id>").
+// String returns the canonical DID string ("did:agent-semantic-protocol:<id>").
 func (d *DID) String() string {
 	return fmt.Sprintf("did:%s:%s", d.Method, d.ID)
 }
@@ -129,7 +129,7 @@ var ErrNoPrivateKey = fmt.Errorf("did: private key not available")
 // TrustGraph stores peer-to-peer trust scores in memory.
 // It is concurrency-safe — lock before read/write.
 type TrustGraph struct {
-	scores map[string]float32 // key: "did:symplex:<from>-><to>"
+	scores map[string]float32 // key: "did:agent-semantic-protocol:<from>-><to>"
 }
 
 // NewTrustGraph creates an empty TrustGraph.

@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/olserra/symplex/core"
+	"github.com/olserra/agent-semantic-protocol/core"
 )
 
 // ------------------------------------------------------------------ IntentMessage
@@ -14,7 +14,7 @@ func TestIntentMessageRoundTrip(t *testing.T) {
 		ID:           "test-intent-001",
 		IntentVector: []float32{0.1, 0.5, -0.3, 0.9, 0.0, 1.0},
 		Capabilities: []string{"nlp", "reasoning", "code-gen"},
-		DID:          "did:symplex:abcdef1234567890",
+		DID:          "did:agent-semantic-protocol:abcdef1234567890",
 		Payload:      `{"task":"summarise","lang":"en"}`,
 		Timestamp:    time.Now().UnixNano(),
 		TrustScore:   0.75,
@@ -94,7 +94,7 @@ func TestIntentMessageEmpty(t *testing.T) {
 func TestHandshakeMessageRoundTrip(t *testing.T) {
 	original := &core.HandshakeMessage{
 		AgentID:           "agent-alpha",
-		DID:               "did:symplex:deadbeef",
+		DID:               "did:agent-semantic-protocol:deadbeef",
 		Capabilities:      []string{"nlp", "vector-search"},
 		Version:           "1.0.0",
 		Timestamp:         1_000_000_000,
@@ -140,7 +140,7 @@ func TestNegotiationResponseRoundTrip(t *testing.T) {
 		AgentID:        "agent-beta",
 		Accepted:       true,
 		WorkflowSteps:  []string{"step-1:parse", "step-2:execute", "step-3:return"},
-		DID:            "did:symplex:cafebabe",
+		DID:            "did:agent-semantic-protocol:cafebabe",
 		ResponseVector: []float32{-0.1, -0.5, 0.3},
 		Timestamp:      999,
 		Reason:         "all capabilities available",
@@ -174,7 +174,7 @@ func TestNegotiationResponseRoundTrip(t *testing.T) {
 // ------------------------------------------------------------------ framing
 
 func TestFrameUnframe(t *testing.T) {
-	payload := []byte("hello symplex")
+	payload := []byte("hello agent-semantic-protocol")
 	framed := core.Frame(core.MsgIntent, payload)
 
 	msgType, unframed, err := core.Unframe(framed)
@@ -235,7 +235,7 @@ func TestDIDBindingValidation(t *testing.T) {
 
 func TestDIDSignVerify(t *testing.T) {
 	d, _ := core.NewDID()
-	msg := []byte("symplex test message")
+	msg := []byte("agent-semantic-protocol test message")
 
 	sig, err := d.Sign(msg)
 	if err != nil {
@@ -276,13 +276,13 @@ func TestDiscoveryRegistry(t *testing.T) {
 
 	reg.Announce(core.AgentProfile{
 		AgentID:      "agent-1",
-		DID:          "did:symplex:aa",
+		DID:          "did:agent-semantic-protocol:aa",
 		Capabilities: []string{"nlp", "reasoning"},
 	}, 0)
 
 	reg.Announce(core.AgentProfile{
 		AgentID:      "agent-2",
-		DID:          "did:symplex:bb",
+		DID:          "did:agent-semantic-protocol:bb",
 		Capabilities: []string{"code-gen", "nlp"},
 	}, 0)
 

@@ -1,18 +1,18 @@
-# Symplex Protocol
+# Agent Semantic Protocol
 
 > **Semantic Interoperability Layer for AI Agents** — a lightweight extension of MCP (Model Context Protocol) built for the era of agentic AI meshes.
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/symplex-protocol/symplex)](https://goreportcard.com/report/github.com/symplex-protocol/symplex)
-[![CI](https://github.com/symplex-protocol/symplex/actions/workflows/ci.yml/badge.svg)](https://github.com/symplex-protocol/symplex/actions/workflows/ci.yml)
+![Go Report Card](https://goreportcard.com/badge/github.com/olserra/agent-semantic-protocol)
+[![CI](https://github.com/olserra/agent-semantic-protocol/actions/workflows/ci.yml/badge.svg)](https://github.com/olserra/agent-semantic-protocol/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 > **Status:** Active development — v0.1 core is stable. See [docs/plans/](docs/plans/) for the current implementation roadmap.
 
 ---
 
-## What Is Symplex?
+## What Is Agent Semantic Protocol?
 
-Symplex enables AI agents to communicate **by meaning, not schema**.  Instead of exchanging rigid JSON tool calls, agents share **semantic intent vectors** — compact float32 embeddings that describe goals in a shared latent space.  Any agent that understands the vector space can negotiate, delegate, and collaborate — without pre-registered APIs.
+Agent Semantic Protocol enables AI agents to communicate **by meaning, not schema**.  Instead of exchanging rigid JSON tool calls, agents share **semantic intent vectors** — compact float32 embeddings that describe goals in a shared latent space.  Any agent that understands the vector space can negotiate, delegate, and collaborate — without pre-registered APIs.
 
 ### Core Concepts
 
@@ -21,14 +21,14 @@ Symplex enables AI agents to communicate **by meaning, not schema**.  Instead of
 | **Intent Vector** | A `[]float32` embedding (e.g. 384-dim sentence-transformer) that encodes the *semantic goal* of a request |
 | **Spontaneous Negotiation** | Agents advertise capabilities and bid on intents without a central broker |
 | **Dynamic Discovery** | A TTL-based capability registry lets agents appear/disappear at runtime |
-| **Federated Trust (DIDs)** | Each agent has a `did:symplex:<sha256(pubkey)>` identifier backed by an Ed25519 key-pair |
+| **Federated Trust (DIDs)** | Each agent has a `did:agent-semantic-protocol:<sha256(pubkey)>` identifier backed by an Ed25519 key-pair |
 | **Distributed Workflows** | Accepted intents unfold into ordered workflow steps, dispatched across capable peers via libp2p |
 
 ---
 
-## Comparison: Symplex vs. MCP vs. A2A
+## Comparison: Agent Semantic Protocol vs. MCP vs. A2A
 
-| Feature | MCP (Anthropic) | Google A2A | **Symplex** |
+| Feature | MCP (Anthropic) | Google A2A | **Agent Semantic Protocol** |
 |---|---|---|---|
 | Message format | JSON-RPC 2.0 | JSON (task objects) | **Protobuf wire + intent vectors** |
 | Capability model | Static tool registry | Static skill cards | **Dynamic, TTL-based discovery** |
@@ -44,8 +44,8 @@ Symplex enables AI agents to communicate **by meaning, not schema**.  Instead of
 ## Repository Layout
 
 ```
-symplex/
-├── proto/symplex.proto          # Protobuf message definitions (reference)
+agent-semantic-protocol/
+├── proto/agent-semantic-protocol.proto          # Protobuf message definitions (reference)
 ├── core/
 │   ├── types.go                 # Go struct definitions
 │   ├── encoding.go              # Protobuf wire encode/decode (no codegen required)
@@ -82,8 +82,8 @@ symplex/
 ### Install & Run
 
 ```bash
-git clone https://github.com/symplex-protocol/symplex
-cd symplex
+git clone https://github.com/agent-semantic-protocol-protocol/agent-semantic-protocol
+cd agent-semantic-protocol
 
 go mod download   # fetch all dependencies (including libp2p)
 
@@ -98,18 +98,18 @@ go run ./examples/negotiation-demo/main.go
 
 ```
 ╔══════════════════════════════════════════════╗
-║     Symplex v0.1 — Simple Handshake Demo     ║
+║     Agent Semantic Protocol v0.1 — Simple Handshake Demo     ║
 ╚══════════════════════════════════════════════╝
 
 ✓ Agent Alpha started
   Peer ID : 12D3KooW...
-  DID     : did:symplex:3a7f...
+  DID     : did:agent-semantic-protocol:3a7f...
   Caps    : [nlp reasoning intent-parsing]
 
 ✓ Agent Beta started
   ...
 
-── Performing Symplex Handshake ─────────────────────────────────────
+── Performing Agent Semantic Protocol Handshake ─────────────────────────────────────
 [Beta] ← Handshake from "agent-alpha"  caps=[nlp reasoning intent-parsing]
 
 [Alpha] ✓ Handshake complete!
@@ -126,12 +126,12 @@ make test
 
 ---
 
-## Using Symplex in Your Go Project
+## Using Agent Semantic Protocol in Your Go Project
 
 ```go
 import (
-    "github.com/symplex-protocol/symplex/core"
-    "github.com/symplex-protocol/symplex/p2p"
+    "github.com/agent-semantic-protocol-protocol/agent-semantic-protocol/core"
+    "github.com/agent-semantic-protocol-protocol/agent-semantic-protocol/p2p"
 )
 
 // 1. Create an agent identity
@@ -173,7 +173,7 @@ client := picoclaw.NewClient("https://api.picoclaw.io",
     picoclaw.WithAPIKey("pk_..."),
     picoclaw.WithAgentID("my-picoclaw-agent"),
 )
-// Register as a Symplex negotiation handler
+// Register as a Agent Semantic Protocol negotiation handler
 bus.Register("picoclaw", client.AsNegotiationHandler())
 ```
 

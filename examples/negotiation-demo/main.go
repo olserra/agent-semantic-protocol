@@ -1,6 +1,6 @@
 // negotiation-demo — Agent A sends a semantic intent to Agent B, which
 // evaluates compatibility and responds with a distributed workflow plan.
-// The demo exercises the full Symplex negotiation loop over libp2p.
+// The demo exercises the full Agent Semantic Protocol negotiation loop over libp2p.
 //
 // Run:
 //
@@ -14,8 +14,8 @@ import (
 	"time"
 
 	"github.com/libp2p/go-libp2p/core/peer"
-	"github.com/olserra/symplex/core"
-	"github.com/olserra/symplex/p2p"
+	"github.com/olserra/agent-semantic-protocol/core"
+	"github.com/olserra/agent-semantic-protocol/p2p"
 )
 
 func main() {
@@ -23,7 +23,7 @@ func main() {
 	defer cancel()
 
 	fmt.Println("╔══════════════════════════════════════════════╗")
-	fmt.Println("║  Symplex v0.1 — Intent Negotiation Demo      ║")
+	fmt.Println("║  Agent Semantic Protocol v0.1 — Intent Negotiation Demo      ║")
 	fmt.Println("╚══════════════════════════════════════════════╝")
 	fmt.Println()
 
