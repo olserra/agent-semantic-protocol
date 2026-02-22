@@ -6,6 +6,8 @@
 [![CI](https://github.com/symplex-protocol/symplex/actions/workflows/ci.yml/badge.svg)](https://github.com/symplex-protocol/symplex/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+> **Status:** Active development — v0.1 core is stable. See [docs/plans/](docs/plans/) for the current implementation roadmap.
+
 ---
 
 ## What Is Symplex?
@@ -51,16 +53,20 @@ symplex/
 │   ├── handshake.go             # Cryptographic handshake protocol
 │   ├── negotiation.go           # Intent negotiation + cosine ranking
 │   ├── discovery.go             # Capability discovery registry
-│   └── encoding_test.go         # Unit tests
+│   ├── encoding_test.go         # Unit tests (encoding, DID, cosine, discovery)
+│   └── signing_test.go          # Unit tests (per-message Ed25519 signing)
 ├── p2p/
 │   ├── host.go                  # libp2p AgentHost wrapper
+│   ├── host_test.go             # Integration tests (handshake, intent, announce)
 │   └── protocol.go              # WorkflowOrchestrator, convenience helpers
 ├── picoclaw/
 │   └── client.go                # Adapter for Picoclaw AI assistant API
 ├── examples/
 │   ├── simple-handshake/main.go # Two agents handshake over TCP
 │   └── negotiation-demo/main.go # Full intent → negotiation → workflow loop
-├── docs/spec.md                 # Protocol specification
+├── docs/
+│   ├── spec.md                  # Protocol specification
+│   └── plans/                   # Versioned implementation plans
 └── .github/workflows/ci.yml    # GitHub Actions CI
 ```
 
@@ -196,9 +202,25 @@ Please read [docs/spec.md](docs/spec.md) before proposing wire-format changes �
 
 ## Roadmap
 
-- **v0.2** — Message signing (Ed25519 per-message), QUIC transport, WASM agent support
-- **v0.3** — Federated DID resolution (DID document over DHT), zk-SNARK capability proofs
-- **v1.0** — Stable wire format, MCP gateway adapter, multi-language SDKs (Python, TypeScript)
+### Completed
+
+| Version | Feature | Status |
+|---------|---------|--------|
+| v0.1 | Core protocol, handshake, negotiation, discovery, p2p transport | ✅ |
+| v0.1 | Capability announcement handling in P2P (`MsgCapability` → DiscoveryRegistry) | ✅ |
+| v0.1 | P2P integration tests (handshake, intent accept/reject, announce) | ✅ |
+| v0.1 | Per-message Ed25519 signing (`IntentMessage`, `NegotiationResponse`) | ✅ |
+
+### Planned
+
+| Version | Feature |
+|---------|---------|
+| **v0.2** | QUIC transport (pending quic-go TLS session-ticket fix), WebRTC support |
+| **v0.2** | Signature verification on receive (currently signed but not verified on inbound) |
+| **v0.3** | Federated DID resolution (DID document over DHT), zk-SNARK capability proofs |
+| **v1.0** | Stable wire format, MCP gateway adapter, multi-language SDKs (Python, TypeScript) |
+
+See [docs/plans/](docs/plans/) for detailed implementation plans with exact file paths and test commands.
 
 ---
 
