@@ -73,6 +73,7 @@ type IntentMessage struct {
 	Timestamp    int64             // Unix nanoseconds
 	TrustScore   float32           // Sender trust score [0.0, 1.0]
 	Metadata     map[string]string // Arbitrary extension metadata
+	Signature    []byte            // Ed25519 signature of ID+Payload by sender DID key
 }
 
 func (m *IntentMessage) MsgType() MessageType { return MsgIntent }
@@ -102,6 +103,7 @@ type NegotiationResponse struct {
 	Timestamp      int64
 	Reason         string
 	TrustDelta     float32
+	Signature      []byte // Ed25519 signature of RequestID+Reason by responder DID key
 }
 
 func (m *NegotiationResponse) MsgType() MessageType { return MsgNegotiation }

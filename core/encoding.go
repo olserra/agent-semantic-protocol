@@ -149,6 +149,7 @@ func (m *IntentMessage) Encode() ([]byte, error) {
 	e.i64(6, m.Timestamp)
 	e.f32(7, m.TrustScore)
 	e.strMap(8, m.Metadata)
+	e.bytes(9, m.Signature)
 	return e.buf, nil
 }
 
@@ -222,6 +223,13 @@ func DecodeIntentMessage(data []byte) (*IntentMessage, error) {
 				return nil, err
 			}
 			m.Metadata[k] = v
+			data = data[n2:]
+		case 9:
+			b, n2 := protowire.ConsumeBytes(data)
+			if n2 < 0 {
+				return nil, fmt.Errorf("intent: invalid signature")
+			}
+			m.Signature = append([]byte(nil), b...)
 			data = data[n2:]
 		default:
 			n2 := protowire.ConsumeFieldValue(num, typ, data)
@@ -342,6 +350,7 @@ func (m *NegotiationResponse) Encode() ([]byte, error) {
 	e.i64(7, m.Timestamp)
 	e.str(8, m.Reason)
 	e.f32(9, m.TrustDelta)
+	e.bytes(10, m.Signature)
 	return e.buf, nil
 }
 
@@ -418,6 +427,13 @@ func DecodeNegotiationResponse(data []byte) (*NegotiationResponse, error) {
 				return nil, fmt.Errorf("negoresp: invalid trust_delta")
 			}
 			m.TrustDelta = math.Float32frombits(v)
+			data = data[n2:]
+		case 10:
+			b, n2 := protowire.ConsumeBytes(data)
+			if n2 < 0 {
+				return nil, fmt.Errorf("negoresp: invalid signature")
+			}
+			m.Signature = append([]byte(nil), b...)
 			data = data[n2:]
 		default:
 			n2 := protowire.ConsumeFieldValue(num, typ, data)

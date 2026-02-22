@@ -40,7 +40,7 @@ func DefaultNegotiationHandler(agent *Agent) NegotiationHandler {
 			steps = buildWorkflow(intent)
 		}
 
-		return &NegotiationResponse{
+		resp := &NegotiationResponse{
 			RequestID:      intent.ID,
 			AgentID:        agent.ID,
 			Accepted:       accepted,
@@ -50,7 +50,11 @@ func DefaultNegotiationHandler(agent *Agent) NegotiationHandler {
 			Timestamp:      time.Now().UnixNano(),
 			Reason:         reason,
 			TrustDelta:     trustDelta(accepted),
-		}, nil
+		}
+		if sig, err := agent.DID.Sign([]byte(resp.RequestID + resp.Reason)); err == nil {
+			resp.Signature = sig
+		}
+		return resp, nil
 	}
 }
 
@@ -65,7 +69,7 @@ func CreateIntent(
 	if err != nil {
 		return nil, err
 	}
-	return &IntentMessage{
+	intent := &IntentMessage{
 		ID:           id,
 		IntentVector: intentVector,
 		Capabilities: requiredCapabilities,
@@ -74,7 +78,13 @@ func CreateIntent(
 		Timestamp:    time.Now().UnixNano(),
 		TrustScore:   0.5,
 		Metadata:     map[string]string{"protocol": ProtocolVersion},
-	}, nil
+	}
+	sig, err := sender.DID.Sign([]byte(intent.ID + intent.Payload))
+	if err != nil {
+		return nil, fmt.Errorf("CreateIntent: sign: %w", err)
+	}
+	intent.Signature = sig
+	return intent, nil
 }
 
 // CosineSimilarity returns the cosine similarity of two equal-length vectors.
