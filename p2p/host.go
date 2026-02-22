@@ -151,6 +151,7 @@ func (ah *AgentHost) Handshake(ctx context.Context, peerID peer.ID) (*core.Hands
 		AgentID:      resp.AgentID,
 		DID:          resp.DID,
 		Capabilities: append([]string(nil), resp.Capabilities...),
+		PublicKey:    append([]byte(nil), resp.PublicKey...),
 	}
 	ah.mu.Unlock()
 	ah.discovery.Announce(ah.known[peerID.String()], 0)
@@ -184,6 +185,14 @@ func (ah *AgentHost) SendIntent(
 	resp, err := core.DecodeNegotiationResponse(data)
 	if err != nil {
 		return nil, fmt.Errorf("p2p intent: decode response: %w", err)
+	}
+
+	// Verify response signature if we know the peer's public key.
+	ah.mu.RLock()
+	profile, known := ah.known[peerID.String()]
+	ah.mu.RUnlock()
+	if known && len(resp.Signature) > 0 && !core.VerifyResponseSignature(resp, profile.PublicKey) {
+		return nil, fmt.Errorf("p2p intent: invalid response signature from %s", peerID)
 	}
 
 	// Update trust graph.
@@ -258,6 +267,7 @@ func (ah *AgentHost) handleIncomingHandshake(s network.Stream, data []byte) {
 		AgentID:      incoming.AgentID,
 		DID:          incoming.DID,
 		Capabilities: append([]string(nil), incoming.Capabilities...),
+		PublicKey:    append([]byte(nil), incoming.PublicKey...),
 	}
 	ah.mu.Unlock()
 	ah.discovery.Announce(ah.known[s.Conn().RemotePeer().String()], 0)
@@ -266,6 +276,14 @@ func (ah *AgentHost) handleIncomingHandshake(s network.Stream, data []byte) {
 func (ah *AgentHost) handleIncomingIntent(s network.Stream, data []byte) {
 	intent, err := core.DecodeIntentMessage(data)
 	if err != nil {
+		return
+	}
+
+	// Verify intent signature if we know the sender's public key.
+	ah.mu.RLock()
+	profile, known := ah.known[s.Conn().RemotePeer().String()]
+	ah.mu.RUnlock()
+	if known && len(intent.Signature) > 0 && !core.VerifyIntentSignature(intent, profile.PublicKey) {
 		return
 	}
 

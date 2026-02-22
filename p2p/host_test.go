@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/libp2p/go-libp2p/core/peer"
 	"github.com/olserra/symplex/core"
 	"github.com/olserra/symplex/p2p"
 )
@@ -144,6 +145,55 @@ func TestSendIntentRejected(t *testing.T) {
 
 	if resp.Accepted {
 		t.Error("expected intent to be rejected, was accepted")
+	}
+}
+
+// TestSendIntentTamperedSignatureRejected verifies that a peer rejects an intent
+// with a forged signature when it already knows the sender's public key.
+func TestSendIntentTamperedSignatureRejected(t *testing.T) {
+	alpha := makeAgent(t, "alpha", []string{"nlp"})
+	beta := makeAgent(t, "beta", []string{"summarisation"})
+
+	hA := makeHost(t, alpha)
+	hB := makeHost(t, beta)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	if err := hA.Connect(ctx, hB.AddrInfo()); err != nil {
+		t.Fatalf("Connect: %v", err)
+	}
+
+	// Handshake first so beta knows alpha's public key.
+	if _, err := hA.Handshake(ctx, hB.PeerID()); err != nil {
+		t.Fatalf("Handshake: %v", err)
+	}
+
+	intent, err := core.CreateIntent(alpha, []float32{0.5}, []string{"summarisation"}, "original")
+	if err != nil {
+		t.Fatalf("CreateIntent: %v", err)
+	}
+
+	// Tamper payload after signing.
+	intent.Payload = "tampered"
+
+	// beta should reject the intent because the signature no longer matches.
+	var received bool
+	hB.OnIntent(func(_ peer.ID, msg *core.IntentMessage) *core.NegotiationResponse {
+		received = true
+		h := core.DefaultNegotiationHandler(beta)
+		resp, _ := h(msg)
+		return resp
+	})
+
+	// SendIntent should either return an error or the callback should not fire.
+	// Either is acceptable — the key assertion is the callback must NOT have been
+	// called (beta dropped the message at the signature-check boundary).
+	_, _ = hA.SendIntent(ctx, hB.PeerID(), intent)
+	time.Sleep(100 * time.Millisecond)
+
+	if received {
+		t.Error("beta should not invoke OnIntent callback for a tampered intent")
 	}
 }
 

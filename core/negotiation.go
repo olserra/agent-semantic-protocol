@@ -131,6 +131,35 @@ type AgentProfile struct {
 	DID             string
 	Capabilities    []string
 	EmbeddingVector []float32 // Optional representative vector for the agent
+	PublicKey       []byte    // Ed25519 public key; set after a handshake
+}
+
+// VerifyIntentSignature returns true if intent.Signature is a valid Ed25519
+// signature of (intent.ID + intent.Payload) by the owner of pubKey.
+// Returns true when Signature is empty (unsigned messages are accepted).
+func VerifyIntentSignature(intent *IntentMessage, pubKey []byte) bool {
+	if len(intent.Signature) == 0 {
+		return true
+	}
+	d, err := DIDFromPublicKey(pubKey)
+	if err != nil {
+		return false
+	}
+	return d.Verify([]byte(intent.ID+intent.Payload), intent.Signature)
+}
+
+// VerifyResponseSignature returns true if resp.Signature is a valid Ed25519
+// signature of (resp.RequestID + resp.Reason) by the owner of pubKey.
+// Returns true when Signature is empty (unsigned messages are accepted).
+func VerifyResponseSignature(resp *NegotiationResponse, pubKey []byte) bool {
+	if len(resp.Signature) == 0 {
+		return true
+	}
+	d, err := DIDFromPublicKey(pubKey)
+	if err != nil {
+		return false
+	}
+	return d.Verify([]byte(resp.RequestID+resp.Reason), resp.Signature)
 }
 
 // ------------------------------------------------------------------ in-process negotiation bus
