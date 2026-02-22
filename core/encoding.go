@@ -460,6 +460,63 @@ func (m *CapabilityAnnouncement) Encode() ([]byte, error) {
 	return e.buf, nil
 }
 
+// DecodeCapabilityAnnouncement deserialises a CapabilityAnnouncement from wire bytes.
+func DecodeCapabilityAnnouncement(data []byte) (*CapabilityAnnouncement, error) {
+	m := &CapabilityAnnouncement{}
+	for len(data) > 0 {
+		num, typ, n := protowire.ConsumeTag(data)
+		if n < 0 {
+			return nil, fmt.Errorf("capability: invalid tag")
+		}
+		data = data[n:]
+
+		switch num {
+		case 1:
+			s, n2 := protowire.ConsumeString(data)
+			if n2 < 0 {
+				return nil, fmt.Errorf("capability: invalid agent_id")
+			}
+			m.AgentID = s
+			data = data[n2:]
+		case 2:
+			s, n2 := protowire.ConsumeString(data)
+			if n2 < 0 {
+				return nil, fmt.Errorf("capability: invalid did")
+			}
+			m.DID = s
+			data = data[n2:]
+		case 3:
+			s, n2 := protowire.ConsumeString(data)
+			if n2 < 0 {
+				return nil, fmt.Errorf("capability: invalid capability")
+			}
+			m.Capabilities = append(m.Capabilities, s)
+			data = data[n2:]
+		case 4:
+			v, n2 := protowire.ConsumeVarint(data)
+			if n2 < 0 {
+				return nil, fmt.Errorf("capability: invalid timestamp")
+			}
+			m.Timestamp = int64(v)
+			data = data[n2:]
+		case 5:
+			v, n2 := protowire.ConsumeVarint(data)
+			if n2 < 0 {
+				return nil, fmt.Errorf("capability: invalid ttl")
+			}
+			m.TTL = int64(v)
+			data = data[n2:]
+		default:
+			n2 := protowire.ConsumeFieldValue(num, typ, data)
+			if n2 < 0 {
+				return nil, fmt.Errorf("capability: unknown field %d", num)
+			}
+			data = data[n2:]
+		}
+	}
+	return m, nil
+}
+
 // ------------------------------------------------------------------ framing
 
 // Frame wraps encoded message bytes with a 4-byte big-endian length prefix

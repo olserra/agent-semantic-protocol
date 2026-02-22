@@ -290,9 +290,11 @@ func (ah *AgentHost) handleIncomingIntent(s network.Stream, data []byte) {
 }
 
 func (ah *AgentHost) handleIncomingCapability(data []byte) {
-	ann := &core.CapabilityAnnouncement{}
-	_ = ann // decode if needed in v0.2; store raw for now
-	// TODO: decode and register in discovery
+	ann, err := core.DecodeCapabilityAnnouncement(data)
+	if err != nil {
+		return
+	}
+	ah.discovery.AnnounceFromMessage(ann)
 }
 
 // ------------------------------------------------------------------ wire I/O
