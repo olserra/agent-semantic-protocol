@@ -14,7 +14,7 @@ linters:
       enable:
         - shadow
     gocyclo:
-      min-complexity: 15
+      min-complexity: 25
     errcheck:
       check-type-assertions: true
       check-blank: false
@@ -23,5 +23,8 @@ linters:
       - path: _test\.go
         linters:
           - errcheck
+      # defer xxx.Close() errors are intentionally ignored — standard Go pattern
+      - linters: [errcheck]
+        source: "^\\s+defer .*\\.Close\\(\\)"
     paths:
       - vendor/

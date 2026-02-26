@@ -123,7 +123,7 @@ func (ah *AgentHost) Handshake(ctx context.Context, peerID peer.ID) (*core.Hands
 	if err != nil {
 		return nil, err
 	}
-	if err := writeMsg(stream, ours); err != nil {
+	if err = writeMsg(stream, ours); err != nil {
 		return nil, fmt.Errorf("p2p handshake: send: %w", err)
 	}
 
@@ -173,7 +173,7 @@ func (ah *AgentHost) SendIntent(
 	}
 	defer stream.Close()
 
-	if err := writeMsg(stream, intent); err != nil {
+	if err = writeMsg(stream, intent); err != nil {
 		return nil, fmt.Errorf("p2p intent: send: %w", err)
 	}
 

@@ -89,7 +89,7 @@ func main() {
 
 	// ── Connect Requester to both peers ───────────────────────────────────────
 	for _, info := range []peer.AddrInfo{hostC.AddrInfo(), hostL.AddrInfo()} {
-		if err := hostR.Connect(ctx, info); err != nil {
+		if err = hostR.Connect(ctx, info); err != nil {
 			log.Fatalf("connect: %v", err)
 		}
 	}
@@ -97,7 +97,8 @@ func main() {
 	// ── Handshake to populate discovery registry ──────────────────────────────
 	fmt.Println("── Handshake phase ──────────────────────────────────────────────────")
 	for _, pid := range []peer.ID{hostC.PeerID(), hostL.PeerID()} {
-		result, err := p2p.DiscoverAndHandshake(ctx, hostR, peer.AddrInfo{
+		var result core.HandshakeResult
+		result, err = p2p.DiscoverAndHandshake(ctx, hostR, peer.AddrInfo{
 			ID:    pid,
 			Addrs: nil,
 		})

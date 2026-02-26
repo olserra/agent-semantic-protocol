@@ -69,7 +69,7 @@ func main() {
 	})
 
 	// ── Connect Alpha → Beta ──────────────────────────────────────────────────
-	if err := hostA.Connect(ctx, hostB.AddrInfo()); err != nil {
+	if err = hostA.Connect(ctx, hostB.AddrInfo()); err != nil {
 		log.Fatalf("connect alpha→beta: %v", err)
 	}
 	fmt.Println("✓ TCP connection established (alpha→beta)")
