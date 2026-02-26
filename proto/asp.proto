@@ -8,7 +8,7 @@ syntax = "proto3";
 
 package agent-semantic-protocol.v1;
 
-option go_package = "github.com/agent-semantic-protocol-protocol/agent-semantic-protocol/proto/gen;agent-semantic-protocol_proto";
+option go_package = "github.com/olserra/agent-semantic-protocol/proto/gen;asp_proto";
 
 // IntentMessage carries a semantic intent from one agent to another.
 // The intent_vector encodes meaning in a shared embedding space (e.g., sentence-transformers).

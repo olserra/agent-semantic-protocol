@@ -248,3 +248,14 @@ func randomID() (string, error) {
 	}
 	return hex.EncodeToString(b), nil
 }
+
+// LogIntentMessage logs an intent message.
+func LogIntentMessage(intent *IntentMessage) error {
+	if intent.Logger != nil {
+		logErr := intent.Logger.LogMessage(intent.ID, "IntentMessage", fmt.Sprintf("Capabilities: %v, Payload: %s", intent.Capabilities, intent.Payload))
+		if logErr != nil {
+			return fmt.Errorf("failed to log intent message: %w", logErr)
+		}
+	}
+	return nil
+}

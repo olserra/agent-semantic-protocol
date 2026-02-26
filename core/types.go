@@ -74,6 +74,7 @@ type IntentMessage struct {
 	TrustScore   float32           // Sender trust score [0.0, 1.0]
 	Metadata     map[string]string // Arbitrary extension metadata
 	Signature    []byte            // Ed25519 signature of ID+Payload by sender DID key
+	Logger       *Logger            // Logger instance for auditable logs
 }
 
 func (m *IntentMessage) MsgType() MessageType { return MsgIntent }
