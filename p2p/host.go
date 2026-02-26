@@ -54,11 +54,7 @@ func NewHost(ctx context.Context, agent *core.Agent) (*AgentHost, error) {
 	h, err := libp2p.New(
 		libp2p.ListenAddrStrings(
 			"/ip4/127.0.0.1/tcp/0",
-			"/ip4/127.0.0.1/udp/0/quic-v1",
 		),
-		libp2p.Transport(libp2pquic.NewTransport(
-			libp2pquic.WithDisableSessionTickets(),
-		)),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("p2p: create host: %w", err)
