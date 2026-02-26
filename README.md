@@ -2,6 +2,8 @@
 
 > **Connecting AI agents through meaning, not schema.**
 
+The **Agent Semantic Protocol (ASP)** connects agents to each other, unlike MCP, which connects LLMs to tools. Instead of rigid APIs, ASP uses **semantic intent vectors** to describe goals, enabling agents to dynamically discover, negotiate, and collaborate. This makes ASP more flexible, scalable, and interoperable, fostering a smarter, decentralized multi-agent ecosystem.
+
 ![Go Report Card](https://goreportcard.com/badge/github.com/olserra/agent-semantic-protocol)
 [![CI](https://github.com/olserra/agent-semantic-protocol/actions/workflows/ci.yml/badge.svg)](https://github.com/olserra/agent-semantic-protocol/actions/workflows/ci.yml)
 [![Codecov](https://codecov.io/gh/olserra/agent-semantic-protocol/branch/main/graph/badge.svg)](https://codecov.io/gh/olserra/agent-semantic-protocol)
@@ -14,11 +16,22 @@
 
 MCP connects LLMs to tools. **ASP connects agents to agents.**
 
-ASP enables AI agents to communicate **by meaning, not schema**. Instead of rigid JSON APIs, agents share **semantic intent vectors** — compact embeddings that describe goals in a shared latent space. This allows:
+ASP enables AI agents to communicate **by meaning, not schema**. Instead of rigid JSON APIs, agents share **semantic intent vectors** \
+— compact embeddings that describe goals in a shared latent space. This allows:
 
 - **Dynamic Discovery**: Agents appear/disappear at runtime.
 - **Spontaneous Negotiation**: No central broker needed.
 - **Federated Trust**: Decentralized identifiers (DIDs) ensure authenticity.
+
+### Why is this important?
+
+In traditional systems, agents rely on predefined APIs and schemas to interact. This approach is brittle and limits flexibility. ASP introduces a paradigm shift by enabling agents to understand each other's goals and capabilities dynamically, fostering:
+
+- **Interoperability**: Agents from different vendors can collaborate seamlessly.
+- **Scalability**: New agents can join or leave without disrupting the network.
+- **Resilience**: Decentralized trust mechanisms reduce single points of failure.
+
+By focusing on meaning rather than structure, ASP paves the way for a more adaptive and intelligent multi-agent ecosystem.
 
 ---
 
