@@ -62,7 +62,7 @@ jobs:
             - name: golangci-lint
               uses: golangci/golangci-lint-action@v6.0.1
               with:
-                  version: latest
+                  version: "1.52.2" # Pinning to a stable version
                   args: --timeout=5m
 
     security:
@@ -80,5 +80,5 @@ jobs:
 
             - name: Run govulncheck
               run: |
-                  go install golang.org/x/vuln/cmd/govulncheck@latest
+                  go install golang.org/x/vuln/cmd/govulncheck@v1.1.4 # Pinning version
                   govulncheck ./...
