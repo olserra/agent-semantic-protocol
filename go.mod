@@ -4,29 +4,12 @@ go 1.24.6
 
 require (
 	github.com/libp2p/go-libp2p v0.47.0
-	github.com/libp2p/go-libp2p-quic-transport v0.17.0
 	google.golang.org/protobuf v1.36.6
 )
 
 require (
-	github.com/cheekybits/genny v1.0.0 // indirect
 	github.com/dunglas/httpsfv v1.1.0 // indirect
-	github.com/francoispqt/gojay v1.2.13 // indirect
-	github.com/fsnotify/fsnotify v1.4.9 // indirect
-	github.com/go-task/slim-sprig v0.0.0-20210107165309-348f09dbbbc0 // indirect
-	github.com/google/gopacket v1.1.19 // indirect
-	github.com/ipfs/go-log/v2 v2.5.0 // indirect
-	github.com/klauspost/compress v1.18.0 // indirect
-	github.com/libp2p/go-libp2p-core v0.20.1 // indirect
-	github.com/libp2p/go-libp2p-tls v0.3.0 // indirect
 	github.com/libp2p/go-yamux/v5 v5.0.1 // indirect
-	github.com/lucas-clemente/quic-go v0.27.0 // indirect
-	github.com/marten-seemann/qtls-go1-16 v0.1.5 // indirect
-	github.com/marten-seemann/qtls-go1-17 v0.1.1 // indirect
-	github.com/marten-seemann/qtls-go1-18 v0.1.1 // indirect
-	github.com/mattn/go-isatty v0.0.14 // indirect
-	github.com/nxadm/tail v1.4.8 // indirect
-	github.com/onsi/ginkgo v1.16.5 // indirect
 	github.com/pion/dtls/v3 v3.0.6 // indirect
 	github.com/pion/ice/v4 v4.0.10 // indirect
 	github.com/pion/mdns/v2 v2.0.7 // indirect
@@ -35,8 +18,8 @@ require (
 	github.com/pion/transport/v3 v3.0.7 // indirect
 	github.com/pion/turn/v4 v4.0.2 // indirect
 	github.com/pion/webrtc/v4 v4.1.2 // indirect
+	github.com/rogpeppe/go-internal v1.13.1 // indirect
 	golang.org/x/time v0.12.0 // indirect
-	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
 )
 
 require (
